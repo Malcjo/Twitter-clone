@@ -19,15 +19,15 @@ export const authOptions = {
     session: {
         strategy: 'jwt',
     },
-    callbacks:{
+    callbacks: {
         async session({ session, token, user }) {
             // Send properties to the client, like an access_token and user id from a provider.
-            if(session?.user && token?.sub){
+            if (session?.user && token?.sub) {
                 session.user.id = token.sub;
             }
             return session
-          },
+        },
     },
-}
-export default NextAuth(authOptions)
+};
+export default NextAuth(authOptions);
 
