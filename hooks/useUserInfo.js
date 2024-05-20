@@ -7,18 +7,17 @@ export default function useUserInfo(){
     const [userInfo, setUserInfo] = useState();
     const [status, setStatus] = useState('loading');
 
+
     function getUserInfo() {
         if (sessionStatus === 'loading') {
             return;
         }
-        console.log('fetch');
-        console.log(session);
-        fetch('/api/users?id=' + session.user.id)
-            .then(response => {
-                console.log('response');
-                console.log(response.json);
+        console.log('GET');
+        fetch('/api/users?id=' + session.user.id, 
+        {
+            method:'GET'
+        }).then(response => {
                 response.json().then(json => {
-                    console.log(json);
                     setUserInfo(json);
                     setStatus('done');
                 })

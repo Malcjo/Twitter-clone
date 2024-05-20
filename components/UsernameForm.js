@@ -13,9 +13,6 @@ export default function UsernameForm() {
             return;
         }
         if (username === '') {
-            console.log('username');
-            console.log(status);
-            console.log(userInfo);
             const defualtUsername = userInfo?.email?.split('@')[0];
             setUsername(defualtUsername.replace(/[^a-z]+/gi, ''));
         }
@@ -23,6 +20,7 @@ export default function UsernameForm() {
 
     function handleFormSubmit(e) {
         e.preventDefault();
+        console.log(JSON.stringify({ username }));
         fetch('/api/users', {
             method: 'PUT',
             headers: { 'content-type': 'application/json' },

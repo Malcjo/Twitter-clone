@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import { getProviders, signIn, useSession} from "next-auth/react";
 import {useRouter} from "next/router";
 export default function LoginPage({ providers }) {

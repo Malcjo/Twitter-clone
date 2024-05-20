@@ -6,6 +6,7 @@ import { signIn } from "next-auth/react"
 import { getToken } from "next-auth/jwt"
 
 export const authOptions = {
+    secret: process.env.NEXTAUTH_SECRET,
     adapter: MongoDBAdapter(clientPromise),
     providers: [
         GoogleProvider({
@@ -17,17 +18,29 @@ export const authOptions = {
         signIn: '/login',
     },
     session: {
-        strategy: 'jwt',
+        strategy: 'jwt',//json web token
     },
     callbacks: {
         async session({ session, token, user }) {
             // Send properties to the client, like an access_token and user id from a provider.
+
             if (session?.user && token?.sub) {
                 session.user.id = token.sub;
             }
             return session
         },
+        async signIn({ user, account, profile, email, credentials }) {
+
+            return true;  // Return true to allow sign in
+        },
+        async jwt({ token, user, account, profile, isNewUser }) {
+
+            if (user) {
+                token.id = user.id;
+            }
+            return token;
+        },
     },
-};
+}
 export default NextAuth(authOptions);
 
