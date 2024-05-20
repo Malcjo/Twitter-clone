@@ -25,6 +25,7 @@ export default async function handle(req, res){
         await User.findByIdAndUpdate(session.user.id, {username});
         res.json('update');
         console.log(session.username);
+        console.log(session.user.image)
     }
     if(req.method==='GET'){
         const id = req.query.id;

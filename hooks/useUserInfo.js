@@ -19,6 +19,7 @@ export default function useUserInfo(){
         }).then(response => {
                 response.json().then(json => {
                     setUserInfo(json);
+                    console.log(userInfo);
                     setStatus('done');
                 })
             })

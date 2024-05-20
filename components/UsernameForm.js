@@ -1,12 +1,13 @@
 import {useEffect, useState} from "react";
 import useUserInfo from "../hooks/useUserInfo";
+import { useRouter } from "next/router";
 
 export default function UsernameForm() {
 
     const {userInfo, status} = useUserInfo();
     
     const [username, setUsername] = useState('');
-
+    const router = useRouter();
     
     useEffect(() => {
         if (status === 'loading') {
@@ -18,14 +19,15 @@ export default function UsernameForm() {
         }
     })
 
-    function handleFormSubmit(e) {
+    async function handleFormSubmit(e) {
         e.preventDefault();
         console.log(JSON.stringify({ username }));
-        fetch('/api/users', {
+        await fetch('/api/users', {
             method: 'PUT',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ username }),
         });
+        router.reload();
     }
 
     if (status === 'loading') {
