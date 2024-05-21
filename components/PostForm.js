@@ -1,17 +1,22 @@
 import useUserInfo from "@/hooks/useUserInfo";
+import axios from "axios";
 import { useState } from "react";
 
-export default function PostForm(){
-    const {userInfo, status} = useUserInfo();
-    const[text, setText] = useState('');
+export default function PostForm() {
+    const { userInfo, status } = useUserInfo();
+    const [text, setText] = useState('');
 
-function handlePostSubmit(e){
-    e.preventDefault();
-    console.log(text);
+    async function handlePostSubmit(e) {
+        e.preventDefault();
+        await axios.post('/api/posts', {text});
+        // await fetch('/api/posts', {
+        //     method: 'POST',
+        //     headers: { 'content-type': 'application/json' },
+        //     body: JSON.stringify({ text }),
+        // });
+    }
 
-}
-
-    if(status === 'loading'){
+    if (status === 'loading') {
         return '';
     }
     return (
@@ -27,7 +32,7 @@ function handlePostSubmit(e){
                         value={text}
                         onChange={e => setText(e.target.value)}
                         placeholder="What's Happening?" />
-                    <div className="text-right border-t border-twitterBorder pt-2">
+                    <div className="text-right border-t border-twitterBorder pt-2 pb-2">
                         <button className="bg-twitterBlue text-white px-5 py-1 rounded-full">Tweet</button>
                     </div>
                 </div>
