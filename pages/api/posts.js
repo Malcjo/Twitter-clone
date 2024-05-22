@@ -8,13 +8,17 @@ export default async function handler(req, res){
     const session = await getServerSession(req, res, authOptions);
 
     if(req.method === 'GET'){
-        res.json(await Post.find().sort({createdAt: -1}).exec());
+        const posts = await Post.find()
+        .populate('author')
+        .sort({createdAt: -1})
+        .exec();
+        res.json(posts);
     }
 
     if(req.method === 'POST'){
         const{text} = req.body;
         const post = await Post.create({
-            author:session.user._id,
+            author:session.user.id,
             text,
         });
         res.json(post);

@@ -1,19 +1,24 @@
 import useUserInfo from "@/hooks/useUserInfo";
 import axios from "axios";
 import { useState } from "react";
+import Avatar from "./Avatar";
 
-export default function PostForm() {
+export default function PostForm({onPost}) {
     const { userInfo, status } = useUserInfo();
     const [text, setText] = useState('');
 
     async function handlePostSubmit(e) {
         e.preventDefault();
-        await axios.post('/api/posts', {text});
-        // await fetch('/api/posts', {
-        //     method: 'POST',
-        //     headers: { 'content-type': 'application/json' },
-        //     body: JSON.stringify({ text }),
-        // });
+        // await axios.post('/api/posts', {text});
+        // setText('');
+        // if(onPost){
+        //     onPost();
+        // }
+        await fetch('/api/posts', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ text }),
+        });
     }
 
     if (status === 'loading') {
@@ -23,9 +28,7 @@ export default function PostForm() {
         <form className="mx-5" onSubmit={handlePostSubmit}>
             <div className="flex">
                 <div>
-                    <div className="rounded-full overflow-hidden w-12">
-                        <img src={userInfo?.image} alt="avatar" />
-                    </div>
+                    <Avatar src ={userInfo?.image}/>
                 </div>
                 <div className="grow pl-2">
                     <textarea className="w-full p-2 bg-transparent text-twitterWhite"
