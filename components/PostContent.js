@@ -1,12 +1,16 @@
 import ReactTimeAgo from "react-time-ago";
 import Avatar from "./Avatar";
+import Link from "next/link";
 
-export default function PostContent({text, author, createdAt}) {
+export default function PostContent({text, author,createdAt,_id}) {
     console.log('this is the author: ' +author);
     return (
         <div className="flex">
             <div>
-                <Avatar src={author.image} />
+                {!!author?.image &&(
+                    <Avatar src={author.image} />
+                )}
+                
             </div>
             <div className="pl-2">
                 <div>
@@ -19,9 +23,9 @@ export default function PostContent({text, author, createdAt}) {
                     )}
                     
                 </div>
-                <div>
+                <Link href={'/'+author.username+'/status/'+_id}>
                     {text}
-                </div>
+                </Link>
                 
             </div>
 
