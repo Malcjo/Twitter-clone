@@ -10,9 +10,11 @@ export default async function handler(req, res){
     if(req.method === 'GET'){
         const {id} = req.query;
         if(id){
+            
             const post = await Post.findById(id)
             .populate('author');
-            res.json(post);
+            console.log('this is the id: '+post);
+            res.json({post});
         }
         else{
             const posts = await Post.find()

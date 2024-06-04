@@ -7,6 +7,7 @@ import useUserInfo from "@/hooks/useUserInfo";
 import PostForm from "@/components/PostForm";
 import axios from "axios";
 import PostContent from "@/components/PostContent";
+import Layout from "@/components/Layout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,16 +39,21 @@ export default function Home() {
     //             })
     //         })
     
-    fetch('/api/posts', 
-    { 
-      method: 'GET' 
-    }).then(response => {
-        response.json().then(json=>{
-          console.log('data: '+ json);
-          setPosts(json);
-        })
+    axios.get('api/posts', {method: 'GET'}).then(response =>{
+      setPosts(response.data);
+    });
+
+
+    // fetch('/api/posts', 
+    // { 
+    //   method: 'GET' 
+    // }).then(response => {
+    //     response.json().then(json=>{
+    //       console.log('data: '+ json);
+    //       setPosts(json);
+    //     })
         
-      });
+    //   });
   }
 
   useEffect(() => {
@@ -64,16 +70,16 @@ export default function Home() {
   }
 
   return (
-    <div className="max-w-lg mx-auto border-l border-r border-twitterBorder min-h-screen">
+    <Layout>
       <h1 className="text-lg font-bold p-4">Home</h1>
-      <PostForm onPost={()=>{fetchHomePosts();}}/>
+      <PostForm onPost={() => { fetchHomePosts(); }} />
       <div className="">
-        {posts.length > 0 && posts.map(post =>(
+        {posts.length > 0 && posts.map(post => (
           <div className="border-1 border-twitterBorder p-5">
-            <PostContent {...post}/>
+            <PostContent {...post} />
           </div>
         ))}
       </div>
-    </div>
+    </Layout>
   )
 }
