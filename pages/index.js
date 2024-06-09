@@ -15,45 +15,13 @@ export default function Home() {
   
   const {userInfo, status:userInfoStatus} = useUserInfo();
   const [posts, setPosts] = useState([]);
+  const [idsLikedByMe, setIdsLikedByMe] = useState([]);
 
   function fetchHomePosts() {
-    // axios.get('/api/posts').then(response=>{
-    //   setPosts(response.data);
-      
-    // })
-    
-    
-    // fetch('/api/posts', { method: 'GET' })
-    //   .then(response => {
-    //     console.log('data: '+ response.data);
-    //     setPosts(response);
-    //   });
-
-          // fetch('/api/users?id=' + session.user.id, 
-    //     {
-    //         method:'GET'
-    //     }).then(response => {
-    //             response.json().then(json => {
-    //                 setUserInfo(json);
-    //                 setStatus('done');
-    //             })
-    //         })
-    
     axios.get('api/posts', {method: 'GET'}).then(response =>{
-      setPosts(response.data);
+      setPosts(response.data.posts);
+      setIdsLikedByMe(response.data.idsLikedByMe);
     });
-
-
-    // fetch('/api/posts', 
-    // { 
-    //   method: 'GET' 
-    // }).then(response => {
-    //     response.json().then(json=>{
-    //       console.log('data: '+ json);
-    //       setPosts(json);
-    //     })
-        
-    //   });
   }
 
   useEffect(() => {
@@ -76,10 +44,61 @@ export default function Home() {
       <div className="">
         {posts.length > 0 && posts.map(post => (
           <div className="border-1 border-twitterBorder p-5">
-            <PostContent {...post} />
+            <PostContent {...post}/>
           </div>
         ))}
       </div>
     </Layout>
   )
 }
+
+
+// return (
+//   <Layout>
+//     <h1 className="text-lg font-bold p-4">Home</h1>
+//     <PostForm onPost={() => { fetchHomePosts(); }} />
+//     <div className="">
+//       {posts.length > 0 && posts.map(post => (
+//         <div className="border-1 border-twitterBorder p-5">
+//           <PostContent {...post} likedByMe={idsLikedByMe.includes(post._id)}/>
+//         </div>
+//       ))}
+//     </div>
+//   </Layout>
+// )
+// }
+
+// trying to get axios to call properly
+
+    // axios.get('/api/posts').then(response=>{
+    //   setPosts(response.data);
+      
+    // })
+    
+    
+    // fetch('/api/posts', { method: 'GET' })
+    //   .then(response => {
+    //     console.log('data: '+ response.data);
+    //     setPosts(response);
+    //   });
+
+          // fetch('/api/users?id=' + session.user.id, 
+    //     {
+    //         method:'GET'
+    //     }).then(response => {
+    //             response.json().then(json => {
+    //                 setUserInfo(json);
+    //                 setStatus('done');
+    //             })
+    //         })
+
+        // fetch('/api/posts', 
+    // { 
+    //   method: 'GET' 
+    // }).then(response => {
+    //     response.json().then(json=>{
+    //       console.log('data: '+ json);
+    //       setPosts(json);
+    //     })
+        
+    //   });

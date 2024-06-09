@@ -9,16 +9,16 @@ export default function PostForm({onPost}) {
 
     async function handlePostSubmit(e) {
         e.preventDefault();
-        // await axios.post('/api/posts', {text});
-        // setText('');
-        // if(onPost){
-        //     onPost();
-        // }
-        await fetch('/api/posts', {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ text }),
-        });
+        await axios.post('/api/posts', {text});
+        setText('');
+        if(onPost){
+            onPost();
+        }
+        // await fetch('/api/posts', {
+        //     method: 'POST',
+        //     headers: { 'content-type': 'application/json' },
+        //     body: JSON.stringify({ text }),
+        // });
     }
 
     if (status === 'loading') {

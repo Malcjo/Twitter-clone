@@ -5,6 +5,12 @@ import { getServerSession } from "next-auth";
 import Like from "../../models/Like";
 import Post from "../../models/Post";
 
+async function updateLikesCount(postId){
+  const post = await Post.findById(postId);
+  post.likesCount = await Like.countDocuments({post:postId});
+  await post.save();
+}
+
 export default async function handle(req, res) {
   await initMongoose();
   const session = await getServerSession(req, res, authOptions);
@@ -14,14 +20,16 @@ export default async function handle(req, res) {
 
   const existingLike = await Like.findOne({author:userId,post:postId});
 
-    //console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-    //console.log(existingLike);
+  console.log("~~~~~~~~~Existing Like~~~~~~");
+  console.log(existingLike);
 
   if (existingLike) {
     await existingLike.deleteOne();
+    await updateLikesCount(postId);
     res.json(null);
   } else {
     const like = await Like.create({author:userId,post:postId});
+    await updateLikesCount(postId);
     res.json({like});
   }
 }

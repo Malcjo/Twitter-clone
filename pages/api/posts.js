@@ -11,17 +11,18 @@ export default async function handler(req, res){
         const {id} = req.query;
         if(id){
             
-            const post = await Post.findById(id)
-            .populate('author');
-            console.log('this is the id: '+post);
+            const post = await Post.findById(id).populate('author');
             res.json({post});
         }
         else{
             const posts = await Post.find()
             .populate('author')
             .sort({createdAt: -1})
+            .limit(20)
             .exec();
-            res.json(posts);
+            res.json({
+                posts,
+            });
         }
 
     }
@@ -35,3 +36,13 @@ export default async function handler(req, res){
         res.json(post);
     }
 }
+
+// const postsLikedByMe = await Like.find({
+//     author:session.user.id,
+//     post:posts.map(p => p._id),
+// })
+// const idsLikedByMe = postsLikedByMe.map(like => like.post);
+// res.json({
+//     posts,
+//     idsLikedByMe,
+// });

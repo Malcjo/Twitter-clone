@@ -15,9 +15,9 @@ export default function PostButtons({
             const response = await axios.post('api/like', {id});
             console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             
-            console.log(response);
+            console.log(response.data);
             
-            if (response.data.like) {
+            if (response.data?.like) {
                 console.log("Liked");
                 setLikesCount(prev => prev + 1);
                 setLikedByMe(true);
@@ -29,29 +29,11 @@ export default function PostButtons({
             }
         }
         catch (error){
-            console.log("Not Liked");
+            console.log("Error: Not Liked");
             setLikesCount(prev => prev - 1);
             setLikedByMe(false);
-            //console.log("ERROR");
-            //console.log(error);
         }
-       
-        // const response = await fetch('/api/like', {id}, {Headers: {
-        //              'content-type': 'application/json' 
-        //          }}).then(test =>{
-        // //console.log('get post ');
-        // console.log(test);
-        // });
-        // console.log('get post ');
-        // console.log(response);
-
-        
-
-        // const response = await axios.post('/api/like', {id}, {
-        //     Headers: {
-        //         'content-type': 'application/json' 
-        //     }
-        // });
+       console.log("Liked:" + LikedByMe);
 
     }
 
@@ -90,3 +72,20 @@ export default function PostButtons({
 }
 
 
+// attempt call
+        // const response = await fetch('/api/like', {id}, {Headers: {
+        //              'content-type': 'application/json' 
+        //          }}).then(test =>{
+        // //console.log('get post ');
+        // console.log(test);
+        // });
+        // console.log('get post ');
+        // console.log(response);
+
+        
+
+        // const response = await axios.post('/api/like', {id}, {
+        //     Headers: {
+        //         'content-type': 'application/json' 
+        //     }
+        // });
