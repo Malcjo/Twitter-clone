@@ -3,10 +3,11 @@ import Avatar from "./Avatar";
 import Link from "next/link";
 import PostButtons from "./PostButtons";
 
-export default function PostContent({ text, author, createdAt, _id, likesCount, big = false }) {
+export default function PostContent({ text, author, createdAt, _id, likesCount,likedByMe, big = false }) {
     console.log('this is the author: ' + author);
     return (
         <div>
+            {likedByMe? 1:0}
             <div className="flex w-full">
                 <div>
                     {!!author?.image && (
@@ -31,7 +32,7 @@ export default function PostContent({ text, author, createdAt, _id, likesCount, 
                             <Link href={'/' + author.username + '/status/' + _id}>
                                 {text}
                             </Link>
-                            <PostButtons id={_id} likesCount={likesCount}/>
+                            <PostButtons id={_id} likesCount={likesCount} likedByMe={likedByMe}/>
                         </div>
                     )}
                 </div>
@@ -53,7 +54,7 @@ export default function PostContent({ text, author, createdAt, _id, likesCount, 
                             }
                         </div>
                     )}
-                    <PostButtons id={_id}  likesCount={likesCount}/>
+                    <PostButtons id={_id}  likesCount={likesCount} likedByMe={likedByMe}/>
                 </div>
             )}
         </div>

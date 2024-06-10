@@ -20,6 +20,8 @@ export default function Home() {
   function fetchHomePosts() {
     axios.get('api/posts', {method: 'GET'}).then(response =>{
       setPosts(response.data.posts);
+      console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~response liked by me: ");
+      console.log(response.data.idsLikedByMe);
       setIdsLikedByMe(response.data.idsLikedByMe);
     });
   }
@@ -37,36 +39,23 @@ export default function Home() {
     return <UsernameForm />;
   }
 
-  return (
-    <Layout>
-      <h1 className="text-lg font-bold p-4">Home</h1>
-      <PostForm onPost={() => { fetchHomePosts(); }} />
-      <div className="">
-        {posts.length > 0 && posts.map(post => (
-          <div className="border-1 border-twitterBorder p-5">
-            <PostContent {...post}/>
-          </div>
-        ))}
-      </div>
-    </Layout>
-  )
+return (
+  <Layout>
+    <h1 className="text-lg font-bold p-4">Home</h1>
+    <PostForm onPost={() => { fetchHomePosts(); }} />
+    <div className="">
+      {posts.length > 0 && posts.map(post => (
+        <div className="border-1 border-twitterBorder p-5">
+          <PostContent {...post} likedByMe={idsLikedByMe.includes(post._id)}/>
+        </div>
+      ))}
+    </div>
+  </Layout>
+)
 }
 
 
-// return (
-//   <Layout>
-//     <h1 className="text-lg font-bold p-4">Home</h1>
-//     <PostForm onPost={() => { fetchHomePosts(); }} />
-//     <div className="">
-//       {posts.length > 0 && posts.map(post => (
-//         <div className="border-1 border-twitterBorder p-5">
-//           <PostContent {...post} likedByMe={idsLikedByMe.includes(post._id)}/>
-//         </div>
-//       ))}
-//     </div>
-//   </Layout>
-// )
-// }
+
 
 // trying to get axios to call properly
 

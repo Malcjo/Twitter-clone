@@ -2,6 +2,7 @@ import { initMongoose } from "@/lib/mongoose";
 import Post from "@/models/Post";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]";
+import Like from "../../models/Like";
 
 export default async function handler(req, res){
     await initMongoose(); // make sure you have a connnection to the database
@@ -20,8 +21,17 @@ export default async function handler(req, res){
             .sort({createdAt: -1})
             .limit(20)
             .exec();
+
+            const postsLikedByMe = await Like.find({
+                author:session.user.id,
+                post:posts.map(p => p._id),
+            });
+
+            const idsLikedByMe = postsLikedByMe.map(like => like.post);
+            
             res.json({
                 posts,
+                idsLikedByMe,
             });
         }
 
@@ -37,12 +47,3 @@ export default async function handler(req, res){
     }
 }
 
-// const postsLikedByMe = await Like.find({
-//     author:session.user.id,
-//     post:posts.map(p => p._id),
-// })
-// const idsLikedByMe = postsLikedByMe.map(like => like.post);
-// res.json({
-//     posts,
-//     idsLikedByMe,
-// });
