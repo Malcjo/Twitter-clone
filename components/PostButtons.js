@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import FlipNumbers from 'react-flip-numbers';
 
 export default function PostButtons({
     id,
@@ -13,24 +14,15 @@ export default function PostButtons({
         console.log({id});
         const response = await axios.post('api/like', {id});
         
-        console.log("likedByMe?: "+likedByMe);
         
         if (response.data?.like) {
-            console.log(response.data?.like);
-            console.log("likedByMe: " + likedByMe);
-            console.log("Liked: ")
             setLikesCount(prev => prev + 1);
             setLikedByMe(true);
-            console.log("likedByMe: " + likedByMe);
         }
         else{
-            console.log("likedByMe: " + likedByMe);
-            console.log("Unliked: ")
             setLikesCount(prev => prev - 1);
             setLikedByMe(false);
-            console.log("likedByMe: " + likedByMe);
         }
-        console.log("likedByMe?: "+likedByMe);
 
     }
 
@@ -49,13 +41,14 @@ export default function PostButtons({
   <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
 </svg>
 <span>0</span>
-
             </button>
-            <button className={(LikedByMeDefault ? 'text-red-500 fill-red-500 ' : '') + "flex"} onClick={toggleLike}>
+            <button className={(likedByMe ? 'text-red-500 fill-red-500 ' : '') + "flex items-center"} onClick={toggleLike}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mr-1 fill-inherit">
   <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
 </svg>
-<span>{likesCount}</span>
+<span>
+<FlipNumbers height={12} width={12} play perspective={100} numbers={likesCount.toString()} />
+    </span>
             </button>
             <button className="flex">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mr-1">

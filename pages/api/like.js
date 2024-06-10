@@ -4,6 +4,7 @@ import {unstable_getServerSession} from "next-auth";
 import { getServerSession } from "next-auth";
 import Like from "../../models/Like";
 import Post from "../../models/Post";
+import FlipNumbers from 'react-flip-numbers';
 
 async function updateLikesCount(postId){
   const post = await Post.findById(postId);

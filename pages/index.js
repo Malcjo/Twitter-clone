@@ -26,6 +26,10 @@ export default function Home() {
     });
   }
 
+  function logout(){
+    
+  }
+
   useEffect(() => {
     fetchHomePosts();
   }, []);
@@ -49,6 +53,11 @@ return (
           <PostContent {...post} likedByMe={idsLikedByMe.includes(post._id)}/>
         </div>
       ))}
+    </div>
+    <div className="p-5 text-center border-t border-twitterBorder">
+      <button className="bg-twitterWhite text-black px-5 py-2 rounded-full">
+        Logout
+      </button>
     </div>
   </Layout>
 )
