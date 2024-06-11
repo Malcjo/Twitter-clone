@@ -11,21 +11,29 @@ export default async function handler(req, res){
     if(req.method === 'GET'){
         const {id} = req.query;
         if(id){
-            
-            const post = await Post.findById(id).populate('author');
+            const post = await Post.findById(id)
+            .populate('author')
+            .populate({
+                path: 'parent',
+                puoplate: 'author',
+            });
             res.json({post});
         }
         else{
-            const posts = await Post.find()
+            const parent = req.query.parent || null;
+            const posts = await Post.find({parent})
             .populate('author')
             .sort({createdAt: -1})
             .limit(20)
             .exec();
+            let postsLikedByMe =[];
+            if(session){
+                postsLikedByMe = await Like.find({
+                    author:session.user.id,
+                    post:posts.map(p => p._id),
+                });
+            }
 
-            const postsLikedByMe = await Like.find({
-                author:session.user.id,
-                post:posts.map(p => p._id),
-            });
 
             const idsLikedByMe = postsLikedByMe.map(like => like.post);
             
@@ -38,12 +46,27 @@ export default async function handler(req, res){
     }
 
     if(req.method === 'POST'){
-        const{text} = req.body;
+        const{text, parent} = req.body;
         const post = await Post.create({
             author:session.user.id,
             text,
+            parent,
         });
+        if(parent){
+            const parentPost = await Post.findById(parent);
+            parentPost.commentsCount = await Post.countDocuments({parent});
+            await parentPost.save();
+        }
+
+
         res.json(post);
     }
+
+    // async function updateCommentsCount(postId){
+    //     const post = await Post.findById(postId);
+    //     console.log("Like amount: " + await Like.countDocuments({post:postId}));
+    //     post.likesCount = await Like.countDocuments({post:postId});
+    //     await post.save();
+    //   }
 }
 

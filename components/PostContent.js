@@ -3,8 +3,11 @@ import Avatar from "./Avatar";
 import Link from "next/link";
 import PostButtons from "./PostButtons";
 
-export default function PostContent({ text, author, createdAt, _id, likesCount,likedByMe, big = false }) {
-    console.log('this is the author: ' + author);
+export default function PostContent({ 
+    text, author, createdAt, _id, 
+    likesCount,likedByMe, commentsCount,
+    big = false }) {
+    //console.log('this is the author: ' + author);
     return (
         <div>
             {likedByMe? 1:0}
@@ -21,18 +24,23 @@ export default function PostContent({ text, author, createdAt, _id, likesCount,l
                         {big && (<br />)}
                         <span className=" text-twitterLightGray">@{author.username}</span>
                         {createdAt && !big && (
-                            <span className="pl-1 text-twitterLightGray"><ReactTimeAgo
-                                date={createdAt}
-                                timeStyle={'twitter'} /></span>
+                            <span className="pl-1 text-twitterLightGray">
+                                <ReactTimeAgo
+                                date={Date.parse(createdAt)}
+                                timeStyle={'twitter'} />
+                                </span>
                         )}
 
                     </div>
                     {!big && (
                         <div>
                             <Link href={'/' + author.username + '/status/' + _id}>
-                                {text}
+                            <div className="w-full cursor-pointer">
+                            {text}
+                            </div>
+                                
                             </Link>
-                            <PostButtons id={_id} likesCount={likesCount} likedByMe={likedByMe}/>
+                            <PostButtons id={_id} likesCount={likesCount} likedByMe={likedByMe} commentsCount={commentsCount}/>
                         </div>
                     )}
                 </div>
@@ -54,7 +62,7 @@ export default function PostContent({ text, author, createdAt, _id, likesCount,l
                             }
                         </div>
                     )}
-                    <PostButtons id={_id}  likesCount={likesCount} likedByMe={likedByMe}/>
+                    <PostButtons id={_id}  likesCount={likesCount} likedByMe={likedByMe} commentsCount={commentsCount}/>
                 </div>
             )}
         </div>

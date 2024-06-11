@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import UsernameForm from "@/components/UsernameForm";
 import useUserInfo from "@/hooks/useUserInfo";
@@ -8,30 +8,38 @@ import PostForm from "@/components/PostForm";
 import axios from "axios";
 import PostContent from "@/components/PostContent";
 import Layout from "@/components/Layout";
+import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   
-  const {userInfo, status:userInfoStatus} = useUserInfo();
+  const {data:session} = useSession();
+  const {userInfo,setUserInfo, status:userInfoStatus} = useUserInfo();
   const [posts, setPosts] = useState([]);
   const [idsLikedByMe, setIdsLikedByMe] = useState([]);
+  const router = useRouter();
 
   function fetchHomePosts() {
-    axios.get('api/posts', {method: 'GET'}).then(response =>{
+    axios.get('/api/posts').then(response =>{
+      if(response.status == 500){
+        throw new Error("error from server");
+      }
       setPosts(response.data.posts);
-      console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~response liked by me: ");
-      console.log(response.data.idsLikedByMe);
       setIdsLikedByMe(response.data.idsLikedByMe);
     });
+
   }
 
-  function logout(){
-    
+
+  async function logout(){
+    setUserInfo(null);
+    await signOut();
   }
 
   useEffect(() => {
-    fetchHomePosts();
+    try{fetchHomePosts();}catch(e){}
+    
   }, []);
 
 
@@ -39,8 +47,13 @@ export default function Home() {
     return 'loading user info';
   }
 
-  if (!userInfo?.username) {
+  if (userInfo && !userInfo?.username) {
     return <UsernameForm />;
+  }
+
+  if(!userInfo){
+    router.push('/login');
+    return 'no user info';
   }
 
 return (
@@ -54,16 +67,24 @@ return (
         </div>
       ))}
     </div>
-    <div className="p-5 text-center border-t border-twitterBorder">
-      <button className="bg-twitterWhite text-black px-5 py-2 rounded-full">
-        Logout
-      </button>
-    </div>
+    {userInfo && (
+      <div className="p-5 text-center border-t border-twitterBorder">
+        <button onClick={logout} className="bg-twitterWhite text-black px-5 py-2 rounded-full">
+          Logout
+        </button>
+      </div>
+    )}
+
   </Layout>
 )
 }
 
-
+// function fetchHomePosts() {
+//   axios.get('/api/posts', {method: 'GET'}).then(response =>{
+//     setPosts(response.data.posts);
+//     setIdsLikedByMe(response.data.idsLikedByMe);
+//   });
+// }
 
 
 // trying to get axios to call properly

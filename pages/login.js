@@ -12,6 +12,7 @@ export default function LoginPage({ providers }) {
     if(data){
         //console.log(data.user?.id);
         router.push('/');
+        
     }
 
     return (

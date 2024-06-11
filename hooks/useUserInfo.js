@@ -12,14 +12,17 @@ export default function useUserInfo(){
         if (sessionStatus === 'loading') {
             return;
         }
-        console.log('GET');
+        if(!session?.user?.id){
+            setStatus('unauthenticated');
+            return;
+        }
         fetch('/api/users?id=' + session.user.id, 
         {
             method:'GET'
         }).then(response => {
                 response.json().then(json => {
                     setUserInfo(json);
-                    setStatus('done');
+                    setStatus('authenticated');
                 })
             })
     }
@@ -28,6 +31,6 @@ export default function useUserInfo(){
         getUserInfo();
     }, [sessionStatus]);
 
-    return { userInfo, status };
+    return { userInfo, setUserInfo, status };
 
 }
