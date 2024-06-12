@@ -62,7 +62,7 @@ return (
     <PostForm onPost={() => { fetchHomePosts(); }} />
     <div className="">
       {posts.length > 0 && posts.map(post => (
-        <div className="border-1 border-twitterBorder p-5">
+        <div className="border-1 border-twitterBorder p-5" key={post._id}>
           <PostContent {...post} likedByMe={idsLikedByMe.includes(post._id)}/>
         </div>
       ))}

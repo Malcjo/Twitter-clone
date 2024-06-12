@@ -7,6 +7,7 @@ import Link from "next/link";
 import useUserInfo from "@/hooks/useUserInfo";
 import PostForm from "@/components/PostForm";
 import Post from "@/models/Post";
+import TopNavLink from "@/components/TopNavLink";
 
 export default function PostPage() {
 
@@ -42,16 +43,9 @@ export default function PostPage() {
         <Layout>
             {!!post?._id && (
                 <div className="px-5 py-2">
-                    <Link href={'/'}>
-                        <div className="flex mb-5 cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-3">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                            </svg>
-                            Tweet
-                        </div>
-                    </Link>
-                    <PostContent {...post} big/>
+                    <TopNavLink title="Tweet" url="/" />
 
+                    <PostContent {...post} big/>
                 </div>
             )}
             {!!userInfo && (
@@ -63,7 +57,7 @@ export default function PostPage() {
             )}
             <div className="">
                 {replies.length > 0 && replies.map(reply => (
-                    <div className="p-5 border-t border-twitterBorder">
+                    <div className="p-5 border-t border-twitterBorder" key={post._id}>
                         <PostContent {...reply} likedByMe={repliesLikedByMe.includes(reply._id)} />
                     </div>
                 ))}

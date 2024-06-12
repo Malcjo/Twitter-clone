@@ -14,15 +14,25 @@ export default function PostContent({
             <div className="flex w-full">
                 <div>
                     {!!author?.image && (
-                        <Avatar src={author.image} />
+                        <div className="cursor-pointer">
+                            <Link href={'/'+author?.username}>
+                                <Avatar src={author.image} />
+                            </Link>
+                        </div>
                     )}
 
                 </div>
                 <div className="pl-2 grow">
                     <div>
-                        <span className="font-bold pr-1">{author.name}</span>
+                        <Link href={'/' + author?.username}>
+                            <span className="font-bold pr-1 cursor-pointer">{author.name}</span>
+                        </Link>
+
                         {big && (<br />)}
-                        <span className=" text-twitterLightGray">@{author.username}</span>
+
+                        <Link href={'/' + author?.username}>
+                            <span className=" text-twitterLightGray cursor-pointer">@{author.username}</span>
+                        </Link>
                         {createdAt && !big && (
                             <span className="pl-1 text-twitterLightGray">
                                 <ReactTimeAgo
@@ -34,20 +44,20 @@ export default function PostContent({
                     </div>
                     {!big && (
                         <div>
-                            <Link href={'/' + author.username + '/status/' + _id}>
+                            <Link href={'/' + author?.username + '/status/' + _id}>
                             <div className="w-full cursor-pointer">
                             {text}
                             </div>
                                 
                             </Link>
-                            <PostButtons id={_id} likesCount={likesCount} likedByMe={likedByMe} commentsCount={commentsCount}/>
+                            <PostButtons username={author?.username} id={_id} likesCount={likesCount} likedByMe={likedByMe} commentsCount={commentsCount}/>
                         </div>
                     )}
                 </div>
             </div>
             {big && (
                 <div className="mt-2">
-                    <Link href={'/' + author.username + '/status/' + _id}>
+                    <Link href={'/' + author?.username + '/status/' + _id}>
                         {text}
                     </Link>
                     {createdAt && (
@@ -62,7 +72,7 @@ export default function PostContent({
                             }
                         </div>
                     )}
-                    <PostButtons id={_id}  likesCount={likesCount} likedByMe={likedByMe} commentsCount={commentsCount}/>
+                    <PostButtons username={author?.username} id={_id}  likesCount={likesCount} likedByMe={likedByMe} commentsCount={commentsCount}/>
                 </div>
             )}
         </div>

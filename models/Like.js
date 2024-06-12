@@ -1,8 +1,8 @@
 import mongoose, {model, models, Schema} from "mongoose";
 
 const LikeSchema = new Schema({
-  author: {type:mongoose.Types.ObjectId, ref: 'User'},
-  post: {type:mongoose.Types.ObjectId, ref: 'Post'},
+  author: {type:mongoose.Schema.Types.ObjectId, ref: 'User'},
+  post: {type:mongoose.Schema.Types.ObjectId, ref: 'Post'},
 }, {
   timestamps: true,
 });

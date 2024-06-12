@@ -10,7 +10,9 @@ export default async function handler(req, res){
 
     if(req.method === 'GET'){
         const {id} = req.query;
-        if(id){
+        //if have ID
+        if(id)
+            {
             const post = await Post.findById(id)
             .populate('author')
             .populate({
@@ -19,9 +21,15 @@ export default async function handler(req, res){
             });
             res.json({post});
         }
-        else{
+        //if don't have ID
+        else 
+        {
             const parent = req.query.parent || null;
-            const posts = await Post.find({parent})
+            
+            const author = req.query.author;
+            const searthFilter = author ? {author} : {parent};
+
+            const posts = await Post.find(searthFilter)
             .populate('author')
             .sort({createdAt: -1})
             .limit(20)
